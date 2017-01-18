@@ -49,6 +49,12 @@ namespace WpfTutorialSamples.Audio_and_Video
             openFileDialog.Filter = "MP3 files (*.mp3)|*.mp3|All files (*.*)|*.*";
             if (openFileDialog.ShowDialog() == true)
                 mediaPlayer.Open(new Uri(openFileDialog.FileName));
+            listBox.Items.Add(openFileDialog.FileName);
+        }
+
+        private void listBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            
         }
     }
 }
