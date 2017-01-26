@@ -4,6 +4,7 @@ using System.Windows.Media;
 using System.Windows.Threading;
 using Microsoft.Win32;
 using System.IO;
+using System.Windows.Input;
 
 namespace WpfTutorialSamples.Audio_and_Video
 {
@@ -11,6 +12,7 @@ namespace WpfTutorialSamples.Audio_and_Video
     {
         private MediaPlayer mediaPlayer = new MediaPlayer();
 
+        //instanciation et utilisation du timer ici
         public MediaPlayerAudioControlSample()
         {
             InitializeComponent();
@@ -21,60 +23,107 @@ namespace WpfTutorialSamples.Audio_and_Video
             timer.Start();
         }
 
+        /// <summary>
+        /// Affiche un timer avec le temps passant en secondes/minutes & le max secondes/minutes de la chanson
+        /// </summary>
+        /// <param name = "sender" ></ param >
+        /// < param name="e"></param>
         void timer_Tick(object sender, EventArgs e)
         {
             if (mediaPlayer.Source != null)
-                lblStatus.Content = String.Format("{0} / {1}", mediaPlayer.Position.ToString(@"mm\:ss"), mediaPlayer.NaturalDuration.TimeSpan.ToString(@"mm\:ss"));
+                lblStatus.Content = string.Format("{0} / {1}", mediaPlayer.Position.ToString(@"mm\:ss"), mediaPlayer.NaturalDuration.TimeSpan.ToString(@"mm\:ss"));
             else
                 lblStatus.Content = "Veuillez ouvrir un fichier .mp3";
         }
 
+        /// <summary>
+        /// Bouton "Jouer" qui joue la musique
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnPlay_Click(object sender, RoutedEventArgs e)
         {
-            //while(listBox.SelectedItem.ToString.btnPlay_Click != null)
-            //{
-            //    mediaPlayer.Play();
-            //}
             mediaPlayer.Play();
         }
 
+        /// <summary>
+        /// Bouton "Pause" qui joue la musique
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnPause_Click(object sender, RoutedEventArgs e)
         {
             mediaPlayer.Pause();
         }
 
+        /// <summary>
+        /// Bouton "Stop" qui remet à zero la musique et l'arrête
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnStop_Click(object sender, RoutedEventArgs e)
         {
             mediaPlayer.Stop();
         }
 
+        /// <summary>
+        /// Bouton "ouvrir" pour ajouter des morceaux
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnOpen_Click(object sender, RoutedEventArgs e)
         {
+            //Création d'un objet openFileDialog
             OpenFileDialog openFileDialog = new OpenFileDialog();
+            //Filtre pour n'avoir que des mp3
             openFileDialog.Filter = "MP3 files (*.mp3)|*.mp3|All files (*.*)|*.*";
+            string mediaPath = (listBox.SelectedValue).ToString();
+            mediaPlayer.Open(new Uri(mediaPath));
 
             if (openFileDialog.ShowDialog() == true)
-                mediaPlayer.Open(new Uri(openFileDialog.FileName));
+            
+            mediaPlayer.Open(new Uri(openFileDialog.FileName));
 
-            string fileN;
-            fileN = Path.GetFileName(openFileDialog.FileName);
-
+            string fileN = Path.GetFileName(openFileDialog.FileName);
             listBox.Items.Add(fileN);
         }
 
-        private void listBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        private void listBox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            
+            mediaPlayer.Stop();
+            string mediaPath = (listBox.SelectedValue).ToString();
+            mediaPlayer.Open(new Uri(mediaPath));
+            mediaPlayer.Play();
         }
 
-        private void NewCommand_CanExecute(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// utilisateur peut avec sa souris placer ses fichiers TODO
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void listBox_DragEnter(object sender, DragEventArgs e)
         {
-            //e.ToString = true;
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+                e.Effects = DragDropEffects.All;
+            else
+                e.Effects = DragDropEffects.None;
         }
 
-        private void NewCommand_Executed(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// les fichiers sont récupérés et stockés dans la listbox TODO
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void listBox_DragDrop(object sender, DragEventArgs e)
         {
-            MessageBox.Show("The New command was invoked");
+            if (listBox.Items.Count != 0)
+            {
+                listBox.Items.Clear();
+            }
+            string[] s = (string[])e.Data.GetData(DataFormats.FileDrop, false);
+            int i;
+            for (i = 0; i < s.Length; i++)
+                listBox.Items.Add(Path.GetFileName(s[i]));
         }
     }
 }
