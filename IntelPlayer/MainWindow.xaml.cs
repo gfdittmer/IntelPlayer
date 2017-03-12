@@ -23,6 +23,13 @@ namespace WpfTutorialSamples.Audio_and_Video
             timer.Start();
         }
 
+        Window playlist;
+        public void MainWindow()
+        {
+            playlist = new Window();
+            playlist.Show();
+        }
+
         /// <summary>
         /// Affiche un timer avec le temps passant en secondes/minutes & le max secondes/minutes de la chanson
         /// </summary>
@@ -124,6 +131,16 @@ namespace WpfTutorialSamples.Audio_and_Video
             int i;
             for (i = 0; i < s.Length; i++)
                 listBox.Items.Add(Path.GetFileName(s[i]));
+        }
+
+        private void listBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void button_Click(object sender, RoutedEventArgs e)
+        {
+            this.MainWindow();
         }
     }
 }

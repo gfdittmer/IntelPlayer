@@ -1,0 +1,14 @@
+﻿<Window x:Name="playlist1" x:Class="IntelPlayer.playlist"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:IntelPlayer"
+        mc:Ignorable="d"
+        Title="Créer une playlist" Height="300" Width="460">
+    <ListBox x:Name="listBox_Copy" HorizontalAlignment="Left" Height="274" Margin="-3,-1,-5,-4" VerticalAlignment="Top" Width="460">
+        <Button x:Name="button" Content="Button" Width="75"/>
+        <ListBox x:Name="listBox" Height="250" Width="100"/>
+        <ListBox x:Name="listBox1" Height="194" Width="100" Margin="350,0,0,0"/>
+    </ListBox>
+</Window>
