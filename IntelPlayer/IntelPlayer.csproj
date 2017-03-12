@@ -78,6 +78,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Morceaux.cs" />
     <Compile Include="Playlist.cs" />
     <Compile Include="playlist.xaml.cs">
       <DependentUpon>playlist.xaml</DependentUpon>
